@@ -1,0 +1,18 @@
+.venv
+.idea
+.DS_Store
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Raw crawl (1.1 GB, regenerable via data_collection.ipynb) stays local;
+# only the clean catalog is needed at runtime, so keep that one tracked.
+dataset/*
+
+# Regenerable training artifacts stay local (X_train.npz alone is ~500 MB).
+# Only the files app.py loads at runtime are tracked:
+outputs/*
+!outputs/vectorizer.joblib
+!outputs/duplicate_map.csv
+!outputs/model_selection.json
+!outputs/embeddings_all.npz
