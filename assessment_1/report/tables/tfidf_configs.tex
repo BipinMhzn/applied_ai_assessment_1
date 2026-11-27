@@ -1,0 +1,18 @@
+\begin{table}[H]
+  \centering\small
+  \caption{TF-IDF configurations compared on validation P@5. All use character 3--5-grams; the last row was selected.}
+  \label{tab:grid}
+  \begin{tabular}{|c|c|c|c|c|}
+    \hline
+    \textbf{Word n-grams} & \textbf{min\_df} & \textbf{max\_features} & \textbf{Stop-words} & \textbf{Val.\ P@5} \\
+    \hline
+    1--1 & 2 & 100k & none    & 0.609 \\
+    \hline
+    1--2 & 2 & 100k & none    & 0.606 \\
+    \hline
+    1--2 & 3 & 50k  & none    & 0.604 \\
+    \hline
+    1--2 & 2 & 100k & English & 0.610 \\
+    \hline
+  \end{tabular}
+\end{table}

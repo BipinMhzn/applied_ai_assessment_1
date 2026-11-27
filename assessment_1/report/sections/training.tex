@@ -9,31 +9,15 @@ the query. We report precision at $k$ (P@k), hit rate at $k$ (Hit@k: at least on
 top $k$), mean reciprocal rank (MRR) and the precision of random ranking (0.073).
 
 The TF-IDF vectorizer was fitted on the training set only, so nothing leaked from the evaluation sets.
-Four configurations were compared on validation P@5 (Table~\ref{tab:grid}) and the best was kept. The
+Four configurations were compared on validation P@5 (Table~\ref{tab:grid}, Listing~\ref{lst:grid}) and the best was kept. The
 scores barely differ (0.604 to 0.610), so the method, not its settings, limits TF-IDF.
 
-\begin{table}[h]
-  \centering\small
-  \caption{TF-IDF configurations compared on validation P@5. All use character 3--5-grams; the last row was selected.}
-  \label{tab:grid}
-  \begin{tabular}{cccc c}
-    \toprule
-    Word n-grams & min\_df & max\_features & Stop-words & Val.\ P@5 \\
-    \midrule
-    1--1 & 2 & 100k & none    & 0.609 \\
-    1--2 & 2 & 100k & none    & 0.606 \\
-    1--2 & 3 & 50k  & none    & 0.604 \\
-    1--2 & 2 & 100k & English & 0.610 \\
-    \bottomrule
-  \end{tabular}
-\end{table}
+\input{tables/tfidf_configs}
+
+\notebooklisting{snippets/tfidf_grid.py}{Grid search over the four TF-IDF configurations, scored by validation P@5 (\texttt{train\_model.ipynb})}{lst:grid}
 
 MiniLM was used pre-trained: we have no labelled pairs of matching questions, and shared tags are too
 coarse to fine-tune on. Its training step is indexing, where each catalog question is encoded once and
 the vectors are saved for the app (Listing~\ref{lst:encode}).
 
-\begin{lstlisting}[caption={Encoding the catalog with MiniLM and scoring test queries (\texttt{train\_model.ipynb}).}, label={lst:encode}]
-embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
-train_embeddings = embedding_model.encode(train_df["text_all"].tolist(), convert_to_numpy=True)
-similarity = cosine_similarity(test_embeddings, train_embeddings)   # 500 test queries x 12,909
-\end{lstlisting}
+\notebooklisting{snippets/encode_catalog.py}{MiniLM's training step: encoding the catalog, the evaluation query sets and the full app index, and scoring test queries (\texttt{train\_model.ipynb})}{lst:encode}

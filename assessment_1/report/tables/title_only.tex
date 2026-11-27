@@ -1,0 +1,26 @@
+\begin{table}[H]
+  \centering\small
+  \caption{P@5 with title-only queries, overall and for tags with at least 25 test queries.}
+  \label{tab:title}
+  \begin{tabular}{|l|r|c|c|}
+    \hline
+    \textbf{Query subset} & $\mathbf{n}$ & \textbf{TF-IDF} & \textbf{MiniLM} \\
+    \hline
+    All title-only queries         & 500 & 0.589 & 0.653 \\
+    \hline
+    \texttt{numpy}                 & 79 & 0.676 & 0.797 \\
+    \hline
+    \texttt{matplotlib}            & 72 & 0.764 & 0.836 \\
+    \hline
+    \texttt{tensorflow}            & 42 & 0.724 & 0.757 \\
+    \hline
+    \texttt{pytorch}               & 34 & 0.635 & 0.741 \\
+    \hline
+    \texttt{machine-learning}      & 29 & 0.586 & 0.628 \\
+    \hline
+    \texttt{keras}                 & 26 & 0.708 & 0.692 \\
+    \hline
+    \texttt{large-language-model}  & 25 & 0.568 & 0.584 \\
+    \hline
+  \end{tabular}
+\end{table}

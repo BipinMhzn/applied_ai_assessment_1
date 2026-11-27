@@ -1,0 +1,16 @@
+\begin{table}[H]
+  \centering\small
+  \caption{Test-set retrieval quality (500 queries; catalog is the training set).}
+  \label{tab:results}
+  \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|}
+    \hline
+    & \multicolumn{4}{|c|}{$\mathbf{k=5}$} & \multicolumn{4}{c|}{$\mathbf{k=10}$} \\
+    \hline
+    \textbf{Model} & \textbf{P@k} & \textbf{Hit@k} & \textbf{MRR} & \textbf{Random} & \textbf{P@k} & \textbf{Hit@k} & \textbf{MRR} & \textbf{Random} \\
+    \hline
+    TF-IDF            & 0.620 & 0.890 & 0.755 & 0.073 & 0.600 & 0.940 & 0.761 & 0.073 \\
+    \hline
+    MiniLM embeddings & 0.673 & 0.906 & 0.792 & 0.073 & 0.653 & 0.940 & 0.796 & 0.073 \\
+    \hline
+  \end{tabular}
+\end{table}

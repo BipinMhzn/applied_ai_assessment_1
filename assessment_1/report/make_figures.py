@@ -3,7 +3,7 @@
 Run from assessment_1/:   python report/make_figures.py
 Inputs : config.json, dataset/questions_clean.csv, outputs/{model_selection.json,
          embeddings_all.npz, vectorizer.joblib}  (written by the three notebooks)
-Outputs: report/figures/*.pdf
+Outputs: report/figures/*.png
 
 """
 import json
@@ -39,9 +39,9 @@ selection = json.load(open(f"{config['output_dir']}/model_selection.json"))
 
 
 def save(fig, name):
-    fig.savefig(f"{FIG}/{name}.pdf")
+    fig.savefig(f"{FIG}/{name}.png", dpi=300)
     plt.close(fig)
-    print("wrote", f"{FIG}/{name}.pdf")
+    print("wrote", f"{FIG}/{name}.png")
 
 
 # 1. Preprocessing funnel (counts printed by data_preprocessing.ipynb)

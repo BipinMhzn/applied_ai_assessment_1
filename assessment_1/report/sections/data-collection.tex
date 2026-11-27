@@ -1,25 +1,21 @@
 % !TEX root = ../main.tex
-\section{Data Collection}
+\section{Data collection}
 
 We wrote our own collector (\texttt{data\_collection.ipynb}) for the public Stack Exchange API v2.3
-\cite{seapi}; no pre-packaged dataset was used. It requests every Stack Overflow question created between
+\cite{seapi}; no pre-packaged dataset was used, and the collector's design was informed by an online
+scraping guide for Stack Overflow \cite{linksc}. It requests every Stack Overflow question created between
 1 January 2024 and 25 November 2026, one day at a time and 100 questions per page, which keeps each query
 within the API's paging limits. The default response does not include the question body, so the
 collector first creates a custom filter that adds the body, the reason a question was closed and, for
 duplicates, the original question. BeautifulSoup then separates code blocks from the written text, and
 13 fields are stored for each question.
 
+\notebooklisting{snippets/collector_core.py}{Core of the collector: one-day query window, rate-limit handling and API-requested backoff (\texttt{data\_collection.ipynb})}{lst:collect}
+
 The API allows 10,000 requests per day, so the crawl took several days and the collector had to be safe
 to stop and restart. It pauses when the API asks it to slow down, stops cleanly when rate-limited (HTTP
 429), retries failed pages, and on restart continues from the last collected date, skipping questions
 already saved. A second pass fetched the 15,810 original questions that duplicates point to and kept
-those with an AI/ML tag, adding older, frequently referenced questions dating back to 2008. Listing~\ref{lst:collect} shows the core request.
+those with an AI/ML tag, adding older, frequently referenced questions dating back to 2008. Listing~\ref{lst:collect} shows the core request and its rate-limit handling.
 
-\begin{lstlisting}[caption={Core of the collector: one-day query window and API-requested backoff (\texttt{data\_collection.ipynb}).}, label={lst:collect}]
-params = {"site": "stackoverflow", "sort": "creation", "order": "asc", "pagesize": 100,
-          "page": page, "filter": filter_param,
-          "fromdate": int(from_date.timestamp()),                       # one-day window
-          "todate":   int((from_date + timedelta(days=1)).timestamp()) - 1}
-response = requests.get(f"{API}/questions", params=params, timeout=30)
-if data.get("backoff"): time.sleep(data["backoff"])                    # API-requested pause
-\end{lstlisting}
+

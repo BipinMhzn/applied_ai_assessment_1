@@ -1,13 +1,16 @@
+% !TeX program = xelatex
 % CS5079 Applied AI - CA1 Task 1 (group report): StackLearn
 %
 % This file only defines the layout. Content lives in:
-%   preamble.tex         packages and settings
+%   preamble.tex         packages and settings (Times New Roman, 12pt, onehalf spacing)
 %   sections/*.tex       one file per report section (edit these)
+%   tables/*.tex          one file per table, included via \input
+%   snippets/            code shown in the report, included via \notebooklisting
 %   figures/             charts (regenerate with: python report/make_figures.py, run from assessment_1/)
 %
-% Build: cd report && latexmk -pdf main.tex
+% Build: cd report && latexmk -xelatex main.tex
 % Word limit: 1500 for Sections 1-6 (tables, figures, code, references and appendix excluded).
-\documentclass[11pt,a4paper]{article}
+\documentclass[12pt,a4paper]{article}
 \input{preamble}
 
 \begin{document}
@@ -16,7 +19,7 @@
 \input{sections/project-definition}
 \input{sections/data-collection}
 
-\section{Product Creation}
+\section{Product creation}
 \input{sections/preprocessing}
 \input{sections/candidate-models}
 \input{sections/training}

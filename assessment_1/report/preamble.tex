@@ -1,35 +1,75 @@
 % Packages and document-wide settings shared by every section.
-\usepackage[margin=2.2cm]{geometry}
-\usepackage[T1]{fontenc}
-\usepackage{lmodern}
-\usepackage{mathptmx}   % Times for maths
-\usepackage{tgtermes}   % Times (TeX Gyre Termes) for text; code stays Latin Modern mono
-\usepackage{microtype}
+% Style follows the repo house style (assessment_1_task_2, assessment_2 reports).
+
+% Times New Roman via fontspec (fonts/ directory; build with xelatex).
+\usepackage{fontspec}
+\setmainfont{Times New Roman}[
+  Path=fonts/,
+  Extension=.ttf,
+  UprightFont=*,
+  BoldFont=* Bold,
+  ItalicFont=* Italic,
+  BoldItalicFont=* Bold Italic
+]
+
+\usepackage[margin=25mm]{geometry}
+\usepackage{setspace}
+\usepackage{amsmath,amssymb}
 \usepackage{graphicx}
-\usepackage{booktabs}
+\usepackage{float}
 \usepackage{tabularx}
 \usepackage{xcolor}
 \usepackage{listings}
 \usepackage{enumitem}
 \usepackage{caption}
+\captionsetup[table]{position=top,skip=8pt}
+\captionsetup[lstlisting]{justification=centering}
 \usepackage{tikz}
 \usetikzlibrary{positioning,arrows.meta}
+\usepackage{multirow}
+\usepackage{placeins}
+\usepackage{cite}
+\usepackage{xurl}
 \usepackage[hidelinks]{hyperref}
+\graphicspath{{figures/}}
 
-\definecolor{codebg}{HTML}{F6F6F6}
+\onehalfspacing
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\pagestyle{plain}
+\clubpenalty=10000
+\widowpenalty=10000
+
 \definecolor{accent}{HTML}{257DE0}
-\lstset{basicstyle=\ttfamily\footnotesize, backgroundcolor=\color{codebg}, frame=single,
-        rulecolor=\color{codebg}, breaklines=true, columns=fullflexible, keepspaces=true,
-        captionpos=b, language=Python, keywordstyle=\color{accent}, commentstyle=\color{gray}, showstringspaces=false}
+
+% Line-numbered, framed code listings (house style).
+\lstdefinestyle{reportcode}{
+  basicstyle=\ttfamily\footnotesize\linespread{1}\selectfont,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=8pt,
+  frame=single,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  captionpos=b,
+  xleftmargin=12pt,
+  framexleftmargin=4pt
+}
+\lstset{style=reportcode}
 \setlist{nosep, leftmargin=*}
 \captionsetup{font=small}
-\setlength{\parskip}{4pt}
-\setlength{\parindent}{0pt}
 
 % Red marker for details still to be filled in before submission.
 \newcommand{\TODO}[1]{\textcolor{red}{[TODO: #1]}}
 
-% Keep each code listing on one page instead of splitting it across a page break.
-\usepackage{etoolbox}
-\BeforeBeginEnvironment{lstlisting}{\par\noindent\begin{minipage}{\linewidth}}
-\AfterEndEnvironment{lstlisting}{\end{minipage}\par}
+% Keep selected notebook code in snippets/ and include it with \notebooklisting.
+% Each listing and its caption stay on the same page.
+\newcommand{\notebooklisting}[4][Python]{%
+  \par\addvspace{0.5\baselineskip}\noindent
+  \begin{minipage}{\linewidth}
+    \lstinputlisting[language=#1,caption={#3},label={#4}]{#2}
+  \end{minipage}
+  \par\addvspace{0.5\baselineskip}
+}
