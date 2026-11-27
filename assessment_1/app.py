@@ -1,8 +1,8 @@
 """StackLearn — Stack Overflow AI/ML similar-question recommender.
 
-Loads the clean catalog (dataset/questions_clean.csv, written by data_preprocessing.ipynb) and the
-model artifacts (outputs/, written by train_model.ipynb); serves the top-k most similar
-already-answered questions for a question title.
+Loads the shared config (config.json), the clean catalog (dataset/questions_clean.csv, written by
+data_preprocessing.ipynb) and the model artifacts (outputs/, written by train_model.ipynb); serves
+the top-k most similar already-answered questions for a question title.
 
 Run locally:  streamlit run app.py
 Deploy:       Streamlit Community Cloud / Hugging Face Spaces (see requirements.txt)
@@ -18,8 +18,14 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 st.set_page_config(page_title="StackLearn", layout="wide")  # must be the first st command
 
-OUT = "outputs"
-CLEAN = "dataset/questions_clean.csv"
+# Single source of truth for all constants, shared with the notebooks.
+# Fallbacks keep the app runnable if config.json is absent (e.g. minimal deploy).
+try:
+    CONFIG = json.load(open("config.json"))
+except FileNotFoundError:
+    CONFIG = {}
+OUT = CONFIG.get("output_dir", "outputs")
+CLEAN = CONFIG.get("clean_path", "dataset/questions_clean.csv")
 TOP_K = 10
 
 
@@ -35,8 +41,6 @@ def load_artifacts():
     df["creation_date"] = pd.to_datetime(df["creation_date"], utc=True)
     df["tag_list"] = df["tags"].str.split("|")
     vectorizer = joblib.load(f"{OUT}/vectorizer.joblib")
-    dup_map = pd.read_csv(f"{OUT}/duplicate_map.csv")
-    dup_map = dict(zip(dup_map["question_id"].astype(str), dup_map["duplicate_of"]))
 
     model_name, emb_model, E, X = "tfidf", None, None, None
     sel_path = f"{OUT}/model_selection.json"
@@ -52,7 +56,7 @@ def load_artifacts():
             E = np.load(f"{OUT}/embeddings_all.npz")["E"]  # precomputed catalog embeddings
     if model_name == "tfidf":
         X = vectorizer.transform(df["text_all"])  # catalog vectors, same cleaning as training
-    return df, vectorizer, X, dup_map, model_name, emb_model, E
+    return df, vectorizer, X, model_name, emb_model, E
 
 
 def make_ranker(model_name, vectorizer, X, emb_model, E):
@@ -62,7 +66,7 @@ def make_ranker(model_name, vectorizer, X, emb_model, E):
     return lambda q: cosine_similarity(vectorizer.transform([q]), X)[0]
 
 
-df, vectorizer, X, dup_map, model_name, emb_model, E = load_artifacts()
+df, vectorizer, X, model_name, emb_model, E = load_artifacts()
 rank = make_ranker(model_name, vectorizer, X, emb_model, E)
 
 st.title("StackLearn — similar AI/ML Stack Overflow questions")
@@ -100,12 +104,8 @@ else:
         for _, r in results.iterrows():
             link = f"https://stackoverflow.com/questions/{r['question_id']}"
             accepted = " | accepted answer" if r["has_accepted_answer"] else ""
-            dup_note = ""
-            if r["question_id"] in dup_map:
-                targets = dup_map[r["question_id"]].split("|")
-                dup_note = f" | duplicate of {', '.join(targets)}"
             st.markdown(
                 f"**{r['similarity'] * 100:.1f}% match** — [{r['title']}]({link})  \n"
-                f"tags: `{r['tags']}`{accepted}{dup_note}"
+                f"tags: `{r['tags']}`{accepted}"
             )
             st.write(str(r["body_text"])[:500])  # body shown directly, no click needed

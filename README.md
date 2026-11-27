@@ -6,6 +6,7 @@ Contains two assessments, each in its own folder, with the corresponding brief i
 ```
 assessment_group/
 ├── assessment_1/          # CA1 — StackLearn: Stack Overflow similar-question recommender
+│   ├── config.json                # single source of truth: tags, dates, thresholds, paths, top-k
 │   ├── data_collection.ipynb       # crawl Stack Overflow → dataset/questions.csv (raw)
 │   ├── data_preprocessing.ipynb    # clean/filter raw data → dataset/questions_clean.csv
 │   ├── train_model.ipynb           # train & compare retrievers → outputs/ artifacts
@@ -28,6 +29,10 @@ posting a duplicate and waiting for a new answer. It is a content-based retrieva
 catalog of answered AI/ML questions — no user accounts, no feedback loop.
 
 ### Pipeline
+
+All shared constants — collection dates, domain tags, preprocessing thresholds, split dates,
+TF-IDF hyperparameters, top-k values, serving top-k — live in **`config.json`** (single source of
+truth). Every notebook and `app.py` loads it; nothing writes it.
 
 Each notebook has one job and feeds the next:
 
@@ -54,7 +59,7 @@ streamlit run app.py
 ```
 
 The app needs `dataset/questions_clean.csv` and the runtime artifacts in `outputs/`
-(`vectorizer.joblib`, `duplicate_map.csv`, `model_selection.json`, `embeddings_all.npz`).
+(`vectorizer.joblib`, `model_selection.json`, `embeddings_all.npz`).
 If any are missing, regenerate them by running the notebooks in order
 (`data_collection.ipynb` → `data_preprocessing.ipynb` → `train_model.ipynb`).
 

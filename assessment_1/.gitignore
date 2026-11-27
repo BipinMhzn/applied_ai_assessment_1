@@ -13,6 +13,5 @@ dataset/*
 # Only the files app.py loads at runtime are tracked:
 outputs/*
 !outputs/vectorizer.joblib
-!outputs/duplicate_map.csv
 !outputs/model_selection.json
 !outputs/embeddings_all.npz
