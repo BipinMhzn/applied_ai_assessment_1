@@ -1,0 +1,12 @@
+% !TEX root = ../main.tex
+\subsection{Candidate models}
+
+The task is retrieval, not classification, so both candidates turn text into vectors and rank the
+catalog by cosine similarity to the query.
+
+TF-IDF \cite{sklearn} is a simple, transparent baseline that needs no GPU and works well on pasted error
+messages, but it cannot match different words with the same meaning, such as ``runs out of memory'' and
+``OOM''. The second candidate, the Sentence-BERT model \texttt{all-MiniLM-L6-v2}
+\cite{reimers2019sbert,wang2020minilm}, is a small transformer (22 million parameters) trained so that
+sentences with the same meaning end up close together. It suits short, informally written questions and
+runs quickly on a CPU.

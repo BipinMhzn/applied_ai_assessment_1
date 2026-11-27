@@ -1,0 +1,25 @@
+% !TEX root = ../main.tex
+\section{Project Definition}
+
+\subsection{Product and usefulness}
+
+StackLearn is a search tool for developers working on AI and machine learning problems. The user types a
+question, for example ``CUDA out of memory in PyTorch'', and the app returns the ten most similar Stack
+Overflow questions that already have an answer, each with a similarity score, tags, a preview and a link.
+
+Asking an already-solved question wastes the asker's time and the volunteers' who close it as a
+duplicate: 16,861 of the 528,495 questions we collected (3.2\%) were
+closed as duplicates. Keyword search misses many of these because the new question uses different words.
+StackLearn compares questions by meaning, so ``my GPU runs out of memory while training a transformer''
+finds ``How to reduce GPU memory usage when fine-tuning a large transformer model?''.
+
+\subsection{Data and its sufficiency}
+
+The catalog of answered questions is both what users search and what we use to compare the models. We
+reduced 528,495 collected questions to 16,137 answered AI/ML questions
+covering all 179 tags on our curated list.
+
+We consider this sufficient for two reasons. The embedding model is pre-trained on over one billion
+sentence pairs \cite{reimers2019sbert}, so our data supplies the domain content and a fair test set
+rather than teaching it English. And a catalog-size experiment (Figure~\ref{fig:catalog}) shows precision
+levelling off: the last third of the catalog adds only 0.015 to P@5.

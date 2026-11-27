@@ -1,0 +1,35 @@
+% Packages and document-wide settings shared by every section.
+\usepackage[margin=2.2cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{mathptmx}   % Times for maths
+\usepackage{tgtermes}   % Times (TeX Gyre Termes) for text; code stays Latin Modern mono
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{caption}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{codebg}{HTML}{F6F6F6}
+\definecolor{accent}{HTML}{257DE0}
+\lstset{basicstyle=\ttfamily\footnotesize, backgroundcolor=\color{codebg}, frame=single,
+        rulecolor=\color{codebg}, breaklines=true, columns=fullflexible, keepspaces=true,
+        captionpos=b, language=Python, keywordstyle=\color{accent}, commentstyle=\color{gray}, showstringspaces=false}
+\setlist{nosep, leftmargin=*}
+\captionsetup{font=small}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+
+% Red marker for details still to be filled in before submission.
+\newcommand{\TODO}[1]{\textcolor{red}{[TODO: #1]}}
+
+% Keep each code listing on one page instead of splitting it across a page break.
+\usepackage{etoolbox}
+\BeforeBeginEnvironment{lstlisting}{\par\noindent\begin{minipage}{\linewidth}}
+\AfterEndEnvironment{lstlisting}{\end{minipage}\par}

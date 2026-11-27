@@ -1,4 +1,8 @@
 .venv
 .idea
-
 .DS_Store
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+applied/
+CS5079_Assessment_1_2026-2027.pdf

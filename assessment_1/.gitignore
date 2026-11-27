@@ -15,3 +15,31 @@ outputs/*
 !outputs/vectorizer.joblib
 !outputs/model_selection.json
 !outputs/embeddings_all.npz
+
+# LaTeX build directories (report lives in report/)
+report/build/
+report/out/
+
+# LaTeX and bibliography intermediate files
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.toc
+*.lof
+*.lot
+*.dvi
+*.xdv
+*.synctex
+*.synctex.gz
+*.synctex.gz(busy)
+
+# Compiled documents generated alongside their source files
+report/main.pdf
+
+# Keep PDF figures and reference PDFs tracked; do not ignore *.pdf.
